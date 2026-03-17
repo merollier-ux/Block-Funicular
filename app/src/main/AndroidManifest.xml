@@ -26,6 +26,10 @@
         <activity
             android:name=".ui.settings.ApiKeyActivity"
             android:label="@string/title_api_key" />
+        <activity
+            android:name=".ui.achievements.AchievementsActivity"
+            android:label="Achievements"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

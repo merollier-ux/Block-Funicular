@@ -104,6 +104,7 @@ class CodeLabFragment : Fragment() {
             return
         }
 
+        prefsManager.incrementCodeRuns()
         binding.tvOutput.text = "⏳ Running your code..."
         setButtonsEnabled(false)
 

@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:paddingBottom="32dp">
 
-        <!-- Lesson Header -->
+        <!-- Lesson Header with lives -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,14 +27,30 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
-                <TextView
-                    android:id="@+id/tv_lesson_title"
-                    android:layout_width="wrap_content"
+                <!-- Title + Lives row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Lesson Title"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_lesson_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Lesson Title"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_lives_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="❤️❤️❤️❤️❤️"
+                        android:textSize="16sp" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_lesson_subtitle"
@@ -45,7 +61,7 @@
                     android:textSize="14sp" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:gravity="center_vertical"
@@ -74,6 +90,32 @@
                         android:text="~5 min"
                         android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <!-- XP Multiplier badge -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_multiplier"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="#2A1E00"
+                        app:cardCornerRadius="8dp"
+                        app:strokeColor="@color/xp_gold"
+                        app:strokeWidth="1dp">
+                        <TextView
+                            android:id="@+id/tv_multiplier"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="4dp"
+                            android:text="⚡ 2x XP"
+                            android:textColor="@color/xp_gold"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -97,7 +139,6 @@
             android:layout_marginHorizontal="16dp"
             app:cardBackgroundColor="@color/surface_card"
             app:cardCornerRadius="12dp">
-
             <TextView
                 android:id="@+id/tv_theory"
                 android:layout_width="match_parent"
@@ -128,12 +169,10 @@
             android:layout_marginHorizontal="16dp"
             app:cardBackgroundColor="@color/code_background"
             app:cardCornerRadius="12dp">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
                 <EditText
                     android:id="@+id/et_code_editor"
                     android:layout_width="match_parent"
@@ -146,14 +185,11 @@
                     android:padding="16dp"
                     android:textColor="@color/code_text"
                     android:textSize="12sp" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:orientation="horizontal"
                     android:padding="8dp">
-
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_run_example"
                         android:layout_width="wrap_content"
@@ -161,8 +197,6 @@
                         android:text="▶ Run Example"
                         android:textSize="13sp" />
                 </LinearLayout>
-
-                <!-- Example output -->
                 <TextView
                     android:id="@+id/tv_example_output"
                     android:layout_width="match_parent"
@@ -170,10 +204,9 @@
                     android:background="@color/output_background"
                     android:fontFamily="monospace"
                     android:padding="12dp"
+                    android:text="Tap 'Run Example' to see output"
                     android:textColor="@color/code_text"
-                    android:textSize="12sp"
-                    android:visibility="visible"
-                    android:text="Tap 'Run Example' to see output" />
+                    android:textSize="12sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -196,30 +229,51 @@
             android:layout_marginHorizontal="16dp"
             app:cardBackgroundColor="@color/surface_card"
             app:cardCornerRadius="12dp">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <!-- Attempt status row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_attempt_info"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_first_try_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⚡ First try = 2x XP!"
+                        android:textColor="@color/xp_gold"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/tv_exercise_prompt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="4dp"
-                    android:text="Exercise prompt"
                     android:textColor="@color/on_background"
                     android:textSize="14sp" />
 
-                <!-- Exercise code editor -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     app:cardBackgroundColor="@color/code_background"
                     app:cardCornerRadius="8dp">
-
                     <EditText
                         android:id="@+id/et_exercise_code"
                         android:layout_width="match_parent"
@@ -234,33 +288,29 @@
                         android:textSize="12sp" />
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Action buttons -->
+                <!-- Action buttons row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
-
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_hint"
                         style="@style/Widget.Material3.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="💡 Hint" />
-
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_show_solution"
                         style="@style/Widget.Material3.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="👁 Solution" />
-
                     <View
                         android:layout_width="0dp"
                         android:layout_height="1dp"
                         android:layout_weight="1" />
-
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_run_exercise"
                         style="@style/Widget.Material3.Button.TonalButton"
@@ -268,7 +318,6 @@
                         android:layout_height="wrap_content"
                         android:text="▶ Run"
                         android:textSize="13sp" />
-
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_submit_exercise"
                         android:layout_width="wrap_content"
@@ -313,10 +362,67 @@
                     android:fontFamily="monospace"
                     android:lineSpacingExtra="4dp"
                     android:padding="12dp"
+                    android:text="Submit your solution to get AI feedback"
                     android:textColor="@color/code_text"
-                    android:textSize="12sp"
-                    android:visibility="visible"
-                    android:text="Submit your solution to get AI feedback" />
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- ── ADAPTIVE BREAKDOWN CARD (hidden until 2+ failures) ─────── -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_breakdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp"
+            app:cardBackgroundColor="#1A0A0A"
+            app:cardCornerRadius="16dp"
+            app:strokeColor="#F44336"
+            app:strokeWidth="1dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🆘 Having trouble? No problem — let me break it down!"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Claude will simplify this into 3 tiny steps, just for you."
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_breakdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:backgroundTint="#F44336"
+                    android:text="🧩 Break It Down For Me"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_breakdown_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:lineSpacingExtra="6dp"
+                    android:padding="12dp"
+                    android:background="@color/surface_card"
+                    android:textColor="@color/on_background"
+                    android:textSize="13sp"
+                    android:visibility="gone" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

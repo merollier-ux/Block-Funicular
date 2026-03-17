@@ -114,6 +114,9 @@ class TutorFragment : Fragment() {
     }
 
     private fun sendMessage(text: String, apiKey: String) {
+        // Track chat stats
+        prefsManager.incrementChatMessages()
+
         // Add user message
         messages.add(ChatMessage(role = "user", content = text))
         chatAdapter.notifyItemInserted(messages.size - 1)

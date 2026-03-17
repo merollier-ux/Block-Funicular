@@ -114,6 +114,40 @@ class ClaudeApiService {
         )
     }
 
+    /**
+     * Called when a learner is struggling. Returns a simplified breakdown of the concept
+     * in small numbered steps with audio/music analogies throughout.
+     */
+    suspend fun generateBreakdown(
+        lessonTitle: String,
+        exercisePrompt: String,
+        attemptCount: Int,
+        apiKey: String
+    ): Result<String> = withContext(Dispatchers.IO) {
+        val systemPrompt = """
+            You are a patient Python tutor helping a beginner who has tried $attemptCount times
+            and is stuck. They are transitioning careers into audio/ML engineering.
+
+            Break the concept "${lessonTitle}" into 3 super simple micro-steps:
+            STEP 1: [simplest possible explanation, 1-2 sentences]
+            STEP 2: [next building block, 1-2 sentences]
+            STEP 3: [connecting it to the exercise, 1-2 sentences]
+
+            🎵 AUDIO LINK: [one sentence connecting this to their audio/music background]
+
+            Then give a SIMPLER version of the exercise that builds confidence:
+            MINI CHALLENGE: [a much simpler version they can definitely complete]
+
+            Be warm, use simple words, and celebrate that they're asking for help — that's smart!
+        """.trimIndent()
+
+        makeApiCall(
+            apiKey = apiKey,
+            systemPrompt = systemPrompt,
+            messages = listOf(ApiMessage("user", "Exercise I'm stuck on: $exercisePrompt"))
+        )
+    }
+
     suspend fun getHint(
         exercisePrompt: String,
         userCode: String,

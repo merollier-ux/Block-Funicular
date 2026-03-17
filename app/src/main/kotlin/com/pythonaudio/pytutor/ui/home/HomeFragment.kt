@@ -5,129 +5,138 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.pythonaudio.pytutor.R
 import com.pythonaudio.pytutor.data.LessonsRepository
 import com.pythonaudio.pytutor.databinding.FragmentHomeBinding
+import com.pythonaudio.pytutor.model.AchievementsRepository
+import com.pythonaudio.pytutor.model.LevelSystem
+import com.pythonaudio.pytutor.ui.achievements.AchievementsActivity
 import com.pythonaudio.pytutor.ui.lessons.LessonDetailActivity
+import com.pythonaudio.pytutor.ui.settings.ApiKeyActivity
+import com.pythonaudio.pytutor.util.LivesManager
 import com.pythonaudio.pytutor.util.PreferencesManager
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private lateinit var prefs: PreferencesManager
 
-    private lateinit var prefsManager: PreferencesManager
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        prefsManager = PreferencesManager(requireContext())
-        updateUI()
+        prefs = PreferencesManager(requireContext())
         setupClickListeners()
     }
 
     override fun onResume() {
         super.onResume()
-        updateUI()
+        LivesManager.regenIfNeeded(prefs)
+        refreshUI()
     }
 
-    private fun updateUI() {
-        val completedCount = prefsManager.getCompletedLessonCount()
+    private fun refreshUI() {
+        val xp           = prefs.totalXp
+        val streak       = prefs.currentStreak
+        val completedCount = prefs.getCompletedLessonCount()
         val totalLessons = LessonsRepository.getAllLessons().size
-        val xp = prefsManager.totalXp
-        val streak = prefsManager.currentStreak
+        val level        = LevelSystem.forXp(xp)
+        val lives        = prefs.lives
 
-        // Header greeting
-        binding.tvGreeting.text = "Welcome back, coder! 👋"
-        binding.tvSubtitle.text = "Your Python + Audio AI journey continues"
+        // ── Level card ────────────────────────────────────────────────────
+        binding.tvLevelBadge.text  = "LVL ${level.number}"
+        binding.tvLevelTitle.text  = "${level.emoji} ${level.title}"
+        binding.tvStreakBadge.text = "🔥 $streak"
+        binding.tvXpAmount.text    = "$xp XP"
 
-        // Stats
-        binding.tvXpValue.text = "$xp XP"
-        binding.tvStreakValue.text = "$streak days"
-        binding.tvLessonsValue.text = "$completedCount / $totalLessons"
+        val xpToNext = LevelSystem.xpToNext(xp)
+        binding.tvXpToNext.text = if (xpToNext > 0) "$xpToNext XP to next level" else "MAX LEVEL 🎵"
+        binding.progressXp.progress = (LevelSystem.progressFraction(xp) * 100).toInt()
 
-        // Progress bar
-        val progress = if (totalLessons > 0) (completedCount * 100) / totalLessons else 0
-        binding.progressOverall.progress = progress
-        binding.tvProgressPercent.text = "$progress% complete"
-
-        // API key warning
-        if (!prefsManager.hasApiKey()) {
-            binding.cardApiKeyWarning.visibility = View.VISIBLE
+        // ── Lives display ─────────────────────────────────────────────────
+        val heartsStr = "❤️".repeat(lives) + "🖤".repeat(PreferencesManager.MAX_LIVES - lives)
+        binding.tvLives.text = heartsStr
+        if (lives < PreferencesManager.MAX_LIVES) {
+            val mins = LivesManager.minutesUntilNext(prefs)
+            binding.tvLivesRegen.text = "+1 in ${mins}m"
+            binding.tvLivesRegen.visibility = View.VISIBLE
         } else {
-            binding.cardApiKeyWarning.visibility = View.GONE
+            binding.tvLivesRegen.visibility = View.GONE
         }
 
-        // Next lesson to study
+        // ── API key warning ───────────────────────────────────────────────
+        binding.cardApiWarning.visibility = if (!prefs.hasApiKey()) View.VISIBLE else View.GONE
+
+        // ── Continue card ─────────────────────────────────────────────────
         val nextLesson = LessonsRepository.getAllLessons()
-            .firstOrNull { !prefsManager.isLessonCompleted(it.id) }
-
+            .firstOrNull { !prefs.isLessonCompleted(it.id) }
         if (nextLesson != null) {
-            binding.cardNextLesson.visibility = View.VISIBLE
+            binding.tvNextLessonIcon.text  = nextLesson.icon
             binding.tvNextLessonTitle.text = nextLesson.title
-            binding.tvNextLessonSubtitle.text = nextLesson.subtitle
-            binding.tvNextLessonXp.text = "+${nextLesson.xpReward} XP"
-            binding.tvNextLessonTime.text = "~${nextLesson.estimatedMinutes} min"
-            binding.btnStartLesson.setOnClickListener {
-                val intent = Intent(requireContext(), LessonDetailActivity::class.java)
-                intent.putExtra(LessonDetailActivity.EXTRA_LESSON_ID, nextLesson.id)
-                startActivity(intent)
-            }
+            binding.tvNextLessonMeta.text  = "+${nextLesson.xpReward} XP · ~${nextLesson.estimatedMinutes} min"
         } else {
-            binding.cardNextLesson.visibility = View.GONE
-            binding.tvAllDone.visibility = View.VISIBLE
+            binding.tvNextLessonTitle.text = "All lessons complete! 🎓"
+            binding.tvNextLessonMeta.text  = "You've mastered the curriculum"
+            binding.tvNextLessonIcon.text  = "🎓"
         }
 
-        // Featured modules
-        updateModuleCards()
+        // ── Journey progress ──────────────────────────────────────────────
+        val pct = if (totalLessons > 0) (completedCount * 100) / totalLessons else 0
+        binding.progressLessons.progress = pct
+        binding.tvProgressFraction.text = "$completedCount / $totalLessons"
+        binding.tvProgressLabel.text = "$pct% of your Python → Audio ML journey complete"
+
+        // ── Achievements preview ──────────────────────────────────────────
+        val unlockedCount = prefs.getUnlockedCount()
+        val totalAch = AchievementsRepository.all.size
+        binding.tvAchievementCount.text = "$unlockedCount / $totalAch"
+
+        binding.achievementsPreview.removeAllViews()
+        val unlockedAch = AchievementsRepository.all.filter { prefs.isAchievementUnlocked(it.id) }.take(8)
+        val lockedSlots = (8 - unlockedAch.size).coerceAtLeast(0)
+        for (ach in unlockedAch) {
+            addAchievementIcon(ach.icon, false)
+        }
+        repeat(lockedSlots) { addAchievementIcon("🔒", true) }
+
+        // ── Stats ─────────────────────────────────────────────────────────
+        binding.tvStatLessons.text   = completedCount.toString()
+        binding.tvStatCodeRuns.text  = prefs.totalCodeRuns.toString()
+        binding.tvStatStreak.text    = streak.toString()
     }
 
-    private fun updateModuleCards() {
-        val modules = LessonsRepository.modules
-        binding.tvModule1Title.text = modules[0].icon + " " + modules[0].title
-        binding.tvModule2Title.text = modules[1].icon + " " + modules[1].title
-        binding.tvModule3Title.text = modules[2].icon + " " + modules[2].title
-        binding.tvModule4Title.text = if (modules.size > 3) modules[3].icon + " " + modules[3].title else "📋 Lists & Data"
+    private fun addAchievementIcon(emoji: String, locked: Boolean) {
+        val tv = TextView(requireContext()).apply {
+            text      = emoji
+            textSize  = 24f
+            alpha     = if (locked) 0.3f else 1f
+            val dp8   = (8 * resources.displayMetrics.density).toInt()
+            setPadding(dp8 / 2, 0, dp8 / 2, 0)
+        }
+        binding.achievementsPreview.addView(tv)
     }
 
     private fun setupClickListeners() {
-        binding.btnSetupApiKey.setOnClickListener {
-            findNavController().navigate(R.id.action_home_to_settings)
+        binding.btnAddApiKey.setOnClickListener {
+            startActivity(Intent(requireContext(), ApiKeyActivity::class.java))
         }
 
-        binding.btnGoToLessons.setOnClickListener {
-            findNavController().navigate(R.id.navigation_lessons)
+        binding.cardContinue.setOnClickListener {
+            val next = LessonsRepository.getAllLessons()
+                .firstOrNull { !prefs.isLessonCompleted(it.id) } ?: return@setOnClickListener
+            startActivity(
+                Intent(requireContext(), LessonDetailActivity::class.java)
+                    .putExtra(LessonDetailActivity.EXTRA_LESSON_ID, next.id)
+            )
         }
 
-        binding.btnGoToCodeLab.setOnClickListener {
-            findNavController().navigate(R.id.navigation_code_lab)
-        }
-
-        binding.btnGoToTutor.setOnClickListener {
-            findNavController().navigate(R.id.navigation_tutor)
-        }
-
-        binding.cardModule1.setOnClickListener {
-            findNavController().navigate(R.id.navigation_lessons)
-        }
-        binding.cardModule2.setOnClickListener {
-            findNavController().navigate(R.id.navigation_lessons)
-        }
-        binding.cardModule3.setOnClickListener {
-            findNavController().navigate(R.id.navigation_lessons)
-        }
-        binding.cardModule4.setOnClickListener {
-            findNavController().navigate(R.id.navigation_lessons)
+        binding.btnViewAchievements.setOnClickListener {
+            startActivity(Intent(requireContext(), AchievementsActivity::class.java))
         }
     }
 
