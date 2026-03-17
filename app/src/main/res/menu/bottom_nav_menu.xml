@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/navigation_lessons"
+        android:icon="@drawable/ic_book"
+        android:title="Learn" />
+
+    <item
+        android:id="@+id/navigation_code_lab"
+        android:icon="@drawable/ic_code"
+        android:title="Code Lab" />
+
+    <item
+        android:id="@+id/navigation_tutor"
+        android:icon="@drawable/ic_chat"
+        android:title="AI Tutor" />
+
+</menu>

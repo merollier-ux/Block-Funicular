@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">PyTutor</string>
+    <string name="app_tagline">Python for Audio AI Engineering</string>
+
+    <!-- Navigation -->
+    <string name="title_home">Home</string>
+    <string name="title_lessons">Learn</string>
+    <string name="title_code_lab">Code Lab</string>
+    <string name="title_tutor">AI Tutor</string>
+
+    <!-- Home screen -->
+    <string name="greeting_default">Welcome back!</string>
+    <string name="subtitle_default">Continue your Python + Audio AI journey</string>
+    <string name="xp_label">XP</string>
+    <string name="streak_label">Streak</string>
+    <string name="lessons_label">Lessons</string>
+    <string name="continue_learning">Continue Learning</string>
+    <string name="start_lesson">Start Lesson</string>
+
+    <!-- API Key -->
+    <string name="title_api_key">API Key Settings</string>
+    <string name="api_key_hint">Enter your Claude API key (sk-ant-...)</string>
+    <string name="save_key">Save API Key</string>
+    <string name="clear_key">Clear Key</string>
+    <string name="api_key_instructions">Get your free API key at console.anthropic.com</string>
+
+    <!-- Code Lab -->
+    <string name="code_lab_title">Code Lab</string>
+    <string name="run_code">▶ Run</string>
+    <string name="explain_code">💡 Explain</string>
+    <string name="clear_code">Clear</string>
+    <string name="output_placeholder">Output will appear here...</string>
+    <string name="code_placeholder"># Write your Python code here\nprint("Hello, Audio World!")</string>
+
+    <!-- Tutor -->
+    <string name="tutor_placeholder">Ask me anything about Python or audio programming...</string>
+    <string name="send_message">Send</string>
+
+    <!-- Lessons -->
+    <string name="run_example">▶ Run Example</string>
+    <string name="run_exercise">▶ Run My Code</string>
+    <string name="submit_exercise">✓ Submit</string>
+    <string name="show_hint">💡 Hint</string>
+    <string name="show_solution">Show Solution</string>
+    <string name="mark_complete">Mark Complete</string>
+
+    <!-- Errors -->
+    <string name="error_no_api_key">Please add your Claude API key in Settings to use this feature.</string>
+    <string name="error_network">Network error. Please check your connection.</string>
+</resources>
