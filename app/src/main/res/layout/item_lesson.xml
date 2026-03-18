@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_lesson"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingEnd="16dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- Left column: skill-tree node + vertical connector -->
+    <RelativeLayout
+        android:layout_width="56dp"
+        android:layout_height="match_parent">
+
+        <!-- Connector line (top half) -->
+        <View
+            android:id="@+id/connector_top"
+            android:layout_width="2dp"
+            android:layout_height="28dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/surface_variant" />
+
+        <!-- Connector line (bottom half) -->
+        <View
+            android:id="@+id/connector_bottom"
+            android:layout_width="2dp"
+            android:layout_height="28dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:background="@color/surface_variant" />
+
+        <!-- The circular node -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/node_card"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_centerInParent="true"
+            app:cardCornerRadius="22dp"
+            app:cardElevation="4dp"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/primary">
+
+            <TextView
+                android:id="@+id/tv_lesson_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="📖"
+                android:textSize="20sp" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Status badge (top-right of node) -->
+        <TextView
+            android:id="@+id/tv_status_badge"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/badge_xp"
+            android:gravity="center"
+            android:text="✓"
+            android:textColor="@color/white"
+            android:textSize="9sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <!-- Right: lesson content -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingVertical="16dp">
+
+        <TextView
+            android:id="@+id/tv_lesson_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_lesson_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_lesson_xp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/xp_gold"
+                android:textSize="11sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:text="·"
+                android:textColor="@color/text_secondary" />
+
+            <TextView
+                android:id="@+id/tv_lesson_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Far right: action indicator -->
+    <TextView
+        android:id="@+id/tv_action_indicator"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:text="›"
+        android:textColor="@color/primary"
+        android:textSize="24sp" />
+
+</LinearLayout>
