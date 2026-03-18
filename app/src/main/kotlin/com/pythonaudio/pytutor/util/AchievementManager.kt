@@ -22,7 +22,7 @@ object AchievementManager {
 
     private fun shouldUnlock(id: String, prefs: PreferencesManager): Boolean {
         val allLessons = LessonsRepository.getAllLessons()
-        val modules    = LessonsRepository.getModules()
+        val modules    = LessonsRepository.modules
         return when (id) {
             "first_lesson"  -> prefs.getCompletedLessonCount() >= 1
             "hello_world"   -> prefs.totalCodeRuns >= 1

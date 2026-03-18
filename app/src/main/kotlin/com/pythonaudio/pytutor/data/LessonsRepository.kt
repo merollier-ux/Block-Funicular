@@ -463,7 +463,8 @@ def function_name(parameter1, parameter2):
 **Example:**
 ```python
 def hz_to_midi(frequency):
-    """Convert frequency (Hz) to MIDI note number."""
+    ${"\"\"\""}Convert frequency (Hz) to MIDI note number.${"\"\"\""}
+
     import math
     midi = 69 + 12 * math.log2(frequency / 440)
     return round(midi)
@@ -480,16 +481,17 @@ print(f"A4 = MIDI note {hz_to_midi(440)}")
 - The docstring (triple quotes) describes what it does
                     """.trimIndent(),
                     codeExample = """def db_to_linear(db):
-    """Convert decibels to linear amplitude (0.0 to 1.0+)."""
+    ${"\"\"\""}Convert decibels to linear amplitude (0.0 to 1.0+).${"\"\"\""}
     return 10 ** (db / 20)
 
 def linear_to_db(amplitude):
-    """Convert linear amplitude to decibels."""
+    ${"\"\"\""}Convert linear amplitude to decibels.${"\"\"\""}
     import math
     return 20 * math.log10(amplitude)
 
 def clamp(value, min_val=0.0, max_val=1.0):
-    """Clamp a value between min and max."""
+    ${"\"\"\""}Clamp a value between min and max.${"\"\"\""}
+
     return max(min_val, min(max_val, value))
 
 # Test our functions
@@ -500,7 +502,7 @@ print(f"Clamped 1.5 = {clamp(1.5)}")""",
                     exercise = Exercise(
                         prompt = "Write a function called `frequency_to_note` that takes a frequency and returns the closest note name (A, A#, B, C, C#, D, D#, E, F, F#, G, G#). Test it with 440 Hz and 523.25 Hz.",
                         starterCode = """def frequency_to_note(frequency):
-    """Return the closest musical note name for a frequency."""
+    ${"\"\"\""}Return the closest musical note name for a frequency.${"\"\"\""}
     import math
     notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 
@@ -1637,7 +1639,7 @@ android:backgroundTint="@color/primary" <!-- tint a drawable -->
                     codeExample = """# Android XML + Kotlin — illustrated in Python pseudocode
 
 # What this XML does:
-"""
+${"\"\"\""}
 <!-- activity_player.xml -->
 <LinearLayout vertical>
     <TextView id="tv_now_playing" text="Now Playing: -" />
@@ -1648,10 +1650,10 @@ android:backgroundTint="@color/primary" <!-- tint a drawable -->
         <Button id="btn_next" text="⏭" />
     </LinearLayout>
 </LinearLayout>
-"""
+${"\"\"\""}
 
 # What the Kotlin Activity does:
-"""
+${"\"\"\""}
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private var isPlaying = false
@@ -1668,7 +1670,8 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 }
-"""
+${"\"\"\""}
+
 
 # Python simulation of the state machine:
 is_playing = False
@@ -2044,7 +2047,7 @@ import time
 
 # Simulated async API calls
 async def fetch_audio_metadata(track_id):
-    """Simulates a network request (runs 'in background')"""
+    ${"\"\"\""}Simulates a network request (runs 'in background')${"\"\"\""}
     await asyncio.sleep(0.1)  # Simulate 100ms network delay
     return {
         "id": track_id,
@@ -2054,7 +2057,7 @@ async def fetch_audio_metadata(track_id):
     }
 
 async def fetch_all_tracks(track_ids):
-    """Fetch multiple tracks CONCURRENTLY (like Kotlin's async/await)"""
+    ${"\"\"\""}Fetch multiple tracks CONCURRENTLY (like Kotlin's async/await)${"\"\"\""}
     # Python equivalent of Kotlin's async { ... } blocks
     tasks = [fetch_audio_metadata(tid) for tid in track_ids]
     results = await asyncio.gather(*tasks)  # Run all at once!
@@ -2307,5 +2310,4 @@ print(f"Zero crossing rate: {np.mean(zcr):.4f}")""",
 
     fun getModuleById(id: Int): Module? = modules.find { it.id == id }
 
-    fun getModules(): List<Module> = modules
 }

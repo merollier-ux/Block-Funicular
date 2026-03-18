@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PyTutor</string>
+    <string name="app_name">Pythonic</string>
     <string name="app_tagline">Python for Audio AI Engineering</string>
 
     <!-- Navigation -->
